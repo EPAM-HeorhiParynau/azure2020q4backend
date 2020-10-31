@@ -23,10 +23,6 @@ steps:
 
 - template: pipline_templates/build.yml
   parameters:
-    buildConfiguration: 'Debug'
-
-- template: pipline_templates/build.yml
-  parameters:
     buildConfiguration: 'Release'
 
 - task: PublishBuildArtifacts@1
