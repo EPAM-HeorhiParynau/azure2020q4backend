@@ -22,13 +22,5 @@ namespace Azure2020q4API.UnitTests.Common
 
 			outcome.Should().Be("6");
 		}
-
-		[TestMethod]
-		public void ConverterHappyPath_Failed()
-		{
-			var outcome = _converter.Convert(6);
-
-			outcome.Should().Be("s6");
-		}
 	}
 }
