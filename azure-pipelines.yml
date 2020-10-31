@@ -15,6 +15,12 @@ steps:
     packageType: sdk
     version: $(dotnetSdkVersion)
 
+- task: DotNetCoreCLI@2
+  displayName: 'Restore project dependencies'
+  inputs:
+    command: 'restore'
+    projects: '**/*.csproj'
+
 - template: pipline_templates/build.yml
   parameters:
     buildConfiguration: 'Debug'
