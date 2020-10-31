@@ -11,5 +11,11 @@ namespace Azure2020q4API.UnitTests
 		{
 			true.Should().BeTrue();
 		}
+
+		[TestMethod]
+		public void TestMethod2()
+		{
+			true.Should().BeTrue();
+		}
 	}
 }
