@@ -8,9 +8,6 @@ trigger:
 pool:
   vmImage: 'ubuntu-18.04'
  
-variables:
-  buildConfiguration: 'Release'
-
 steps:
 - task: UseDotNet@2
   displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
