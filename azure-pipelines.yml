@@ -20,6 +20,8 @@ steps:
   inputs:
     command: 'restore'
     projects: '**/*.csproj'
+    feedsToUse: 'select'
+    vstsFeed: 'az-2020q4-dependencies/Azure2020Q4-library'
 
 - template: pipline_templates/build.yml
   parameters:

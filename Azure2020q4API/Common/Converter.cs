@@ -4,7 +4,7 @@
 	{
 		public string Convert(int input)
 		{
-			return input.ToString();
+			return new SharedLibrary.Utilities.ConverNumber(input);
 		}
 	}
 }
