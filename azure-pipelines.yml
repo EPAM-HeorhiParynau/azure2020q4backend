@@ -29,8 +29,8 @@ stages:
         vstsFeed: 'az-2020q4-dependencies/Azure2020Q4-library'
 
     - template: pipline_templates/build.yml
-    parameters:
-      buildConfiguration: 'Release'
+      parameters:
+        buildConfiguration: 'Release'
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: drop'
