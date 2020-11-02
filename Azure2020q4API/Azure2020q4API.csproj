@@ -20,7 +20,7 @@
     <PackageReference Include="Swashbuckle.Core" Version="5.6.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
-    <PackageReference Include="SharedLibrary" Version="1.0.0-CI-20201102-160806" />
+    <PackageReference Include="SharedLibrary" Version="1.0.0-CI-20201102-161723" />
   </ItemGroup>
 
 
