@@ -7,15 +7,20 @@ trigger:
 
 pool:
   vmImage: 'ubuntu-18.04'
- 
-steps:
-- task: UseDotNet@2
+ stages:
+- stage: 'Build'
+  displayName: 'Build the web application'
+  jobs: 
+  - job: 'Build'
+    displayName: 'Build job'
+  steps:
+  - task: UseDotNet@2
   displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
   inputs:
     packageType: sdk
     version: $(dotnetSdkVersion)
 
-- task: DotNetCoreCLI@2
+  - task: DotNetCoreCLI@2
   displayName: 'Restore project dependencies'
   inputs:
     command: 'restore'
@@ -23,10 +28,32 @@ steps:
     feedsToUse: 'select'
     vstsFeed: 'az-2020q4-dependencies/Azure2020Q4-library'
 
-- template: pipline_templates/build.yml
+  - template: pipline_templates/build.yml
   parameters:
     buildConfiguration: 'Release'
 
-- task: PublishBuildArtifacts@1
+  - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
   condition: succeeded()
+- stage: 'Deploy'
+  displayName: 'Deploy the web application'
+  dependsOn: Build
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'ubuntu-18.04'
+    environment: dev
+    variables:
+    - group: Release
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureWebApp@1
+            displayName: 'Azure App Service Deploy: api'
+            inputs:
+              azureSubscription: 'Visual Studio Professional'
+              appName: 'az-2020q4'
+              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
