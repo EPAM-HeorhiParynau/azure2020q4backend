@@ -33,8 +33,8 @@ stages:
       buildConfiguration: 'Release'
 
   - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact: drop'
-      condition: succeeded()
+    displayName: 'Publish Artifact: drop'
+    condition: succeeded()
 - stage: 'Deploy'
   displayName: 'Deploy the web application'
   dependsOn: Build
