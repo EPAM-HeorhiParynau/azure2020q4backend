@@ -54,6 +54,6 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: api'
             inputs:
-              azureSubscription: 'Visual Studio Professional'
+              azureSubscription: 'az-2020q4 - Azure'
               appName: 'az-2020q4'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
