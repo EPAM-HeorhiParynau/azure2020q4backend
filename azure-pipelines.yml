@@ -15,26 +15,26 @@ pool:
       displayName: 'Build job'
     steps:
     - task: UseDotNet@2
-    displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
-    inputs:
-      packageType: sdk
-      version: $(dotnetSdkVersion)
+      displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
+      inputs:
+        packageType: sdk
+        version: $(dotnetSdkVersion)
 
     - task: DotNetCoreCLI@2
-    displayName: 'Restore project dependencies'
-    inputs:
-      command: 'restore'
-      projects: '**/*.csproj'
-      feedsToUse: 'select'
-      vstsFeed: 'az-2020q4-dependencies/Azure2020Q4-library'
+      displayName: 'Restore project dependencies'
+      inputs:
+        command: 'restore'
+        projects: '**/*.csproj'
+        feedsToUse: 'select'
+        vstsFeed: 'az-2020q4-dependencies/Azure2020Q4-library'
 
     - template: pipline_templates/build.yml
-    parameters:
-      buildConfiguration: 'Release'
+      parameters:
+        buildConfiguration: 'Release'
 
     - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: drop'
-    condition: succeeded()
+      displayName: 'Publish Artifact: drop'
+      condition: succeeded()
   - stage: 'Deploy'
     displayName: 'Deploy the web application'
     dependsOn: Build
