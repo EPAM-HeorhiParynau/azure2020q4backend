@@ -23,5 +23,9 @@
     <PackageReference Include="SharedLibrary" Version="1.0.0-CI-20201102-161723" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Azure2020q4.Service\Azure2020q4.Service.csproj" />
+  </ItemGroup>
+
 
 </Project>

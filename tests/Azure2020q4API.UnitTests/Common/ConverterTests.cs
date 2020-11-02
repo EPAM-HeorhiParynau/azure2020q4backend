@@ -1,4 +1,5 @@
-﻿using Azure2020q4API.Common;
+﻿using Azure2020q4.Service;
+using Azure2020q4API.Common;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -20,7 +21,7 @@ namespace Azure2020q4API.UnitTests.Common
 		{
 			var outcome = _converter.Convert(6);
 
-			outcome.Should().Be("6");
+			outcome.Should().Be("6" + Class1.Method());
 		}
 	}
 }

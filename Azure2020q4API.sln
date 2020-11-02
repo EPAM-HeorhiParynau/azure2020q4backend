@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azure2020q4API", "Azure2020
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E728CA23-A744-4E0D-A668-EAA6B141A7E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azure2020q4API.UnitTests", "tests\Azure2020q4API.UnitTests\Azure2020q4API.UnitTests.csproj", "{6C7D7DEC-664E-42C6-B4CF-108F94D16395}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azure2020q4API.UnitTests", "tests\Azure2020q4API.UnitTests\Azure2020q4API.UnitTests.csproj", "{6C7D7DEC-664E-42C6-B4CF-108F94D16395}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azure2020q4.Service", "Azure2020q4.Service\Azure2020q4.Service.csproj", "{ED338717-9B5C-4A49-B24C-3411DDF73987}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{6C7D7DEC-664E-42C6-B4CF-108F94D16395}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C7D7DEC-664E-42C6-B4CF-108F94D16395}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C7D7DEC-664E-42C6-B4CF-108F94D16395}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED338717-9B5C-4A49-B24C-3411DDF73987}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED338717-9B5C-4A49-B24C-3411DDF73987}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED338717-9B5C-4A49-B24C-3411DDF73987}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED338717-9B5C-4A49-B24C-3411DDF73987}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
