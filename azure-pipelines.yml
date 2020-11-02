@@ -13,14 +13,14 @@ stages:
   jobs: 
   - job: 'Build'
     displayName: 'Build job'
-  steps:
-  - task: UseDotNet@2
-    displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
-    inputs:
-      packageType: sdk
-      version: $(dotnetSdkVersion)
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
+      inputs:
+        packageType: sdk
+        version: $(dotnetSdkVersion)
 
-  - task: DotNetCoreCLI@2
+    - task: DotNetCoreCLI@2
     displayName: 'Restore project dependencies'
     inputs:
       command: 'restore'
@@ -28,11 +28,11 @@ stages:
       feedsToUse: 'select'
       vstsFeed: 'az-2020q4-dependencies/Azure2020Q4-library'
 
-  - template: pipline_templates/build.yml
+    - template: pipline_templates/build.yml
     parameters:
       buildConfiguration: 'Release'
 
-  - task: PublishBuildArtifacts@1
+    - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop'
     condition: succeeded()
 - stage: 'Deploy'
