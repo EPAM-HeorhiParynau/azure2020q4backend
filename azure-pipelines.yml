@@ -6,7 +6,7 @@ trigger:
 - '*'
 
 pool:
-  vmImage: 'ubuntu-18.04'
+ vmImage: 'ubuntu-18.04'
  stages:
 - stage: 'Build'
   displayName: 'Build the web application'
