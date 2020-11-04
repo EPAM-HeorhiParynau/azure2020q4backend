@@ -79,7 +79,7 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: api'
             inputs:
-              azureSubscription: 'az-2020q4 - Azure'
+              azureSubscription: 'az-2020q4-api'
               appName: '$(WebAppNameDev)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/Azure2020q4API.zip'
 - stage: 'Test'
@@ -102,6 +102,6 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: website'
             inputs:
-              azureSubscription: 'az-2020q4 - Azure'
+              azureSubscription: 'az-2020q4-api'
               appName: '$(WebAppNameTest)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
