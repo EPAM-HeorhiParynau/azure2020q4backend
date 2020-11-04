@@ -1,7 +1,7 @@
 variables:
   buildConfiguration: 'Release'
   dotnetSdkVersion: '3.1.300'
-  releaseBranchName: 'release'
+  releaseBranchName: 'staging-deployment'
 
 trigger:
 - '*'
@@ -47,7 +47,7 @@ stages:
       displayName: 'Publish Artifact: drop'
       condition: succeeded()
 - stage: 'Dev'
-  displayName: 'Deploy tto dev environment'
+  displayName: 'Deploy to dev environment'
   dependsOn: Build
   condition: |
     and
