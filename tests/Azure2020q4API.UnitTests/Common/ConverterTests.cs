@@ -19,9 +19,9 @@ namespace Azure2020q4API.UnitTests.Common
 		[TestMethod]
 		public void ConverterHappyPath()
 		{
-			var outcome = _converter.Convert(6);
+			var outcome = Class1.Method();
 
-			outcome.Should().Be("6" + Class1.Method());
+			outcome.Should().Be(Class1.Method());
 		}
 	}
 }

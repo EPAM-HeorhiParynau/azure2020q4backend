@@ -21,14 +21,6 @@ stages:
         packageType: sdk
         version: $(dotnetSdkVersion)
 
-    - task: DotNetCoreCLI@2
-      displayName: 'Restore project dependencies'
-      inputs:
-        command: 'restore'
-        projects: '**/*.csproj'
-        feedsToUse: 'select'
-        vstsFeed: 'az-2020q4-dependencies/Azure2020Q4-library'
-
     - template: pipline_templates/build.yml
       parameters:
         buildConfiguration: 'Release'
