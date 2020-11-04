@@ -6,7 +6,7 @@ namespace Azure2020q4API.Common
 	{
 		public string Convert(int input)
 		{
-			return new SharedLibrary.Utilities().ConverNumber(input) + Class1.Method();
+			return Class1.Method();
 		}
 	}
 }

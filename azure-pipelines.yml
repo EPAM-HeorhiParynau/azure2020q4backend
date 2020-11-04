@@ -1,6 +1,16 @@
 variables:
   buildConfiguration: 'Release'
   dotnetSdkVersion: '3.1.300'
+  releaseBranchName: 'staging-deployment'
+
+#schedules:
+#- cron: '42 * * * *'
+#  displayName: Deploy every day at 3 A.M.
+#  branches:
+ #   include:
+    #- staging-deployment
+ #   - release
+ # always: false 
 
 trigger:
 - '*'
@@ -19,32 +29,48 @@ stages:
       inputs:
         packageType: sdk
         version: $(dotnetSdkVersion)
-
+    
     - task: DotNetCoreCLI@2
       displayName: 'Restore project dependencies'
       inputs:
         command: 'restore'
         projects: '**/*.csproj'
-        feedsToUse: 'select'
-        vstsFeed: 'az-2020q4-dependencies/Azure2020Q4-library'
 
-    - template: pipline_templates/build.yml
-      parameters:
-        buildConfiguration: 'Release'
+    - task: DotNetCoreCLI@2
+      displayName: 'Build the project - $(buildConfiguration)'
+      inputs:
+        command: 'build'
+        arguments: '--no-restore --configuration $(buildConfiguration)'
+        projects: '**/*.csproj'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish the project - $(buildConfiguration)'
+      inputs:
+        command: 'publish'
+        projects: '**/*.csproj'
+        publishWebProjects: false
+        arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
+        zipAfterPublish: true
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: drop'
       condition: succeeded()
-- stage: 'Deploy'
-  displayName: 'Deploy the web application'
+- stage: 'Dev'
+  displayName: 'Deploy to dev environment'
   dependsOn: Build
+  condition: |
+    and
+    (
+      succeeded(),
+      eq(variables['Build.SourceBranchName'], variables['releaseBranchName'])
+    )
   jobs:
   - deployment: Deploy
     pool:
       vmImage: 'ubuntu-18.04'
     environment: dev
     variables:
-    - group: Release
+    - group: 'Staging slots'
     strategy:
       runOnce:
         deploy:
@@ -54,6 +80,51 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: api'
             inputs:
-              azureSubscription: 'az-2020q4 - Azure'
-              appName: '$(WebAppName)'
+              azureSubscription: 'az-2020q4-api'
+              appName: '$(WebAppNameDev)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/Azure2020q4API.zip'
+- stage: 'Test'
+  displayName: 'Deploy to the test environment'
+  dependsOn: Dev
+  #condition: eq(variables['Build.Reason'], 'Schedule')
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'ubuntu-18.04'
+    environment: test
+    variables:
+    - group: 'Staging slots'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureWebApp@1
+            displayName: 'Azure App Service Deploy: website'
+            inputs:
+              azureSubscription: 'az-2020q4-api'
+              appName: '$(WebAppNameTest)'
+              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/Azure2020q4API.zip'
+- stage: 'Staging'
+  displayName: 'Deploy to the staging environment'
+  dependsOn: Test
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'ubuntu-18.04'
+    environment: staging
+    variables:
+    - group: 'Staging slots'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureWebApp@1
+            displayName: 'Azure App Service Deploy: api'
+            inputs:
+              azureSubscription: 'az-2020q4-api'
+              appName: '$(WebAppNameStaging)'
+              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/Azure2020q4API.zip'              
