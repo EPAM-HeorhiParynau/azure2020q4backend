@@ -3,6 +3,14 @@ variables:
   dotnetSdkVersion: '3.1.300'
   releaseBranchName: 'staging-deployment'
 
+schedules:
+- cron: '0 3 * * *'
+  displayName: Deploy every day at 3 A.M.
+  branches:
+    include:
+    - release
+  always: false 
+
 trigger:
 - '*'
 
@@ -61,7 +69,7 @@ stages:
       vmImage: 'ubuntu-18.04'
     environment: dev
     variables:
-    - group: Staging slots
+    - group: 'Staging slots'
     strategy:
       runOnce:
         deploy:
@@ -74,3 +82,26 @@ stages:
               azureSubscription: 'az-2020q4 - Azure'
               appName: '$(WebAppNameDev)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/Azure2020q4API.zip'
+- stage: 'Test'
+  displayName: 'Deploy to the test environment'
+  dependsOn: Dev
+  #condition: eq(variables['Build.Reason'], 'Schedule')
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'ubuntu-18.04'
+    environment: test
+    variables:
+    - group: 'Staging slots'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureWebApp@1
+            displayName: 'Azure App Service Deploy: website'
+            inputs:
+              azureSubscription: 'az-2020q4 - Azure'
+              appName: '$(WebAppNameTest)'
+              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
